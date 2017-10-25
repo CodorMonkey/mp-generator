@@ -51,9 +51,9 @@ object MpGenerator {
             // 自定义 mapper 父类
             // .setSuperMapperClass("com.baomidou.demo.TestMapper")
             // 自定义 service 父类
-            .setSuperServiceClass("com.monkey.base.IMyService")
+            // .setSuperServiceClass("com.baomidou.demo.TestService")
             // 自定义 service 实现类父类
-            .setSuperServiceImplClass("com.monkey.base.impl.MyServiceImpl")
+            // .setSuperServiceImplClass("com.baomidou.demo.TestServiceImpl")
             // 自定义 controller 父类
             // .setSuperControllerClass("com.baomidou.demo.TestController")
             // 【实体】是否生成字段常量（默认 false）
