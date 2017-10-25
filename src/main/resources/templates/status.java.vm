@@ -1,0 +1,14 @@
+package ${packageName};
+
+/**
+ * $!{statusComment}
+ *
+ * @author $!{author}
+ */
+public interface ${statusName} {
+#foreach($field in ${statusFields})
+
+    ${field.comment}
+    int ${field.key} = ${field.value};
+#end
+}
