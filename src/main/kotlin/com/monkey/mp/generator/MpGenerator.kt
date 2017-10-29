@@ -34,7 +34,7 @@ object MpGenerator {
 
         var extName = "java"
         if (language == ProgramingLanguage.KOTLIN) {
-            extName = "ktl"
+            extName = "kt"
         }
 
         // 策略配置
@@ -130,7 +130,7 @@ object MpGenerator {
                     // 自定义输出文件目录
                     override fun outputFile(tableInfo: TableInfo): String {
                         tableInfo.fields.forEach {
-                            if (it.comment.isNotBlank()) {
+                            if (it.comment?.isNotBlank() == true) {
                                 StatusGenerator.generate(
                                     codePath = codePath,
                                     packageName = "${packageName}.constants",
