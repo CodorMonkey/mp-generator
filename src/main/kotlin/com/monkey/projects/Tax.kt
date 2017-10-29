@@ -17,9 +17,9 @@ fun main(args: Array<String>) {
     val dbConfig = DatabaseConfig(
         dbType = DbType.ORACLE,
         driver = "oracle.jdbc.OracleDriver",
-        user = "ADP",
-        pwd = "123qweasd",
-        url = "jdbc:oracle:thin:@//192.168.1.158:1521/orcl"
+        user = "jinsan",
+        pwd = "jinsan",
+        url = "jdbc:oracle:thin:@//92.12.66.83:1521/ZSPT"
     )
 
     MpGenerator.generate(
@@ -28,6 +28,12 @@ fun main(args: Array<String>) {
         packageName = "com.bjbz.statetax.generator",
         author = author,
         dbConfig = dbConfig,
-        language = ProgramingLanguage.KOTLIN
+        language = ProgramingLanguage.KOTLIN,
+        arrInclude = arrayOf(
+            // 原有更新
+            "DM0_ZSRK_R",
+            // 新添加的
+            "dm2_sfzrd_r", "dm2_sbbs_r", "dm2_fpyj_r", "dm2_zssj_r", "dm2_kjjks_r",
+            "dm2_djxx_xzhfy_y")
     )
 }
