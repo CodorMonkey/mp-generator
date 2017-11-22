@@ -5,7 +5,7 @@ package ${package.Service}
 ${cfg[$module]["${table.serviceName}"].import}
 #else
 import ${package.Entity}.${entity}
-import com.monkey.base.mp.IMyService
+import ${superServiceClassPackage}
 #end
 
 /**

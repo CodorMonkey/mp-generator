@@ -15,13 +15,13 @@ fun main(args: Array<String>) {
     val dbConfig = DatabaseConfig(
         user = "root",
         pwd = "root",
-        url = "jdbc:mysql://localhost:3306/sell?characterEncoding=utf8&allowMultiQueries=true&useSSL=false"
+        url = "jdbc:mysql://localhost:3306/onduty?characterEncoding=utf8&allowMultiQueries=true&useSSL=false"
     )
 
     MpGenerator.generate(
-        codePath = "E:\\study\\videos\\sell\\sell\\src\\main\\kotlin",
-        xmlPath = "E:\\study\\videos\\sell\\sell\\src\\main\\resources\\mapper\\",
-        packageName = "com.monkey.sell.business",
+        codePath = "E:\\yuecheng\\onduty\\onduty\\src\\main\\kotlin",
+        xmlPath = "E:\\yuecheng\\onduty\\onduty\\src\\main\\resources\\mapper",
+        packageName = "com.bjbz.onduty.business",
         author = author,
         dbConfig = dbConfig,
         language = ProgramingLanguage.KOTLIN

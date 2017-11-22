@@ -7,7 +7,7 @@ ${cfg[$module]["${table.serviceImplName}"].import}
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
-import com.monkey.base.mp.impl.MyServiceImpl
+import ${superServiceImplClassPackage};
 import org.springframework.stereotype.Service;
 #end
 
