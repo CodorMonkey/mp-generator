@@ -34,6 +34,7 @@ fun main(args: Array<String>) {
             "DM0_ZSRK_R",
             // 新添加的
             "dm2_sfzrd_r", "dm2_sbbs_r", "dm2_fpyj_r", "dm2_zssj_r", "dm2_kjjks_r",
-            "dm2_djxx_xzhfy_y")
+            "dm2_djxx_xzhfy_y", "DM2_SB_YNSEFJ_R", "DM2_SB_YNSEFJ_R", "DM2_ZSRKFJ_R",
+            "DM2_SB_YNSR_BSFWT_N", "DM2_SB_YNSR_BSFWT_R", "DM2_FP_FPLX")
     )
 }
