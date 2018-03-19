@@ -18,7 +18,7 @@ import ${superServiceClassPackage};
 public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
 //==== 自定义开始 ====
 #if(${cfg[$module]["${table.serviceName}"]})
-  ${cfg[$module]["${table.serviceName}"].content}
+    ${cfg[$module]["${table.serviceName}"].content}
 #end
 //==== 自定义结束 ====
 }

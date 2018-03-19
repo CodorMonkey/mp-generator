@@ -14,7 +14,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.5.8.RELEASE</version>
+    <version>1.5.9.RELEASE</version>
     <relativePath/>
   </parent>
 
@@ -23,9 +23,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
-    <kotlin.version>1.1.61</kotlin.version>
-    <mybatisplus-spring-boot-starter.version>1.0.4</mybatisplus-spring-boot-starter.version>
-    <mybatisplus.version>2.1.2</mybatisplus.version>
+    <kotlin.version>1.2.30</kotlin.version>
+    <mybatisplus-spring-boot-starter.version>1.0.5</mybatisplus-spring-boot-starter.version>
+    <mybatisplus.version>2.1.9</mybatisplus.version>
     <app-name>mp</app-name>
     <start-class>com.monkey.ApplicationKt</start-class>
   </properties>
@@ -53,11 +53,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jdbc</artifactId>
     </dependency>
-    <dependency>
+    <!--<dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatisplus-spring-boot-starter</artifactId>
       <version>${mybatisplus-spring-boot-starter.version}</version>
-    </dependency>
+    </dependency>-->
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus</artifactId>
@@ -80,7 +80,7 @@
     <!--kotlin-->
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib-jre8</artifactId>
+      <artifactId>kotlin-stdlib-jdk8</artifactId>
       <version>${kotlin.version}</version>
     </dependency>
     <dependency>

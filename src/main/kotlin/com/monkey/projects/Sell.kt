@@ -19,8 +19,8 @@ fun main(args: Array<String>) {
     )
 
     MpGenerator.generate(
-        codePath = "E:\\study\\videos\\sell\\sell\\src\\main\\kotlin",
-        xmlPath = "E:\\study\\videos\\sell\\sell\\src\\main\\resources\\mapper\\",
+        codePath = "D:\\study\\kotlin\\sell\\src\\main\\kotlin",
+        xmlPath = "D:\\study\\kotlin\\sell\\src\\main\\resources\\mapper",
         packageName = "com.monkey.sell.business",
         author = author,
         dbConfig = dbConfig,
