@@ -2,11 +2,8 @@ package com.monkey.base.mp.impl
 
 import com.baomidou.mybatisplus.mapper.BaseMapper
 import com.baomidou.mybatisplus.mapper.EntityWrapper
-import com.baomidou.mybatisplus.mapper.Wrapper
+import com.baomidou.mybatisplus.plugins.Page
 import com.baomidou.mybatisplus.service.impl.ServiceImpl
-import com.github.pagehelper.Page
-import com.github.pagehelper.PageHelper
-import com.monkey.base.PageDTO
 import com.monkey.base.mp.IMyService
 
 /**
@@ -18,15 +15,8 @@ open class MyServiceImpl<M : BaseMapper<T>, T> : ServiceImpl<M, T>(), IMyService
         return this.selectList(EntityWrapper(entity))
     }
 
-    override fun selectPageByEntity(entity: T, pageDto: PageDTO): Page<T> {
-        return this.selectPageByWrapper(EntityWrapper(entity), pageDto)
-    }
-
-    override fun selectPageByWrapper(wrapper: Wrapper<T>, pageDto: PageDTO): Page<T> {
-        val page = PageHelper.startPage<T>(pageDto.pageNum, pageDto.pageSize)
-        this.selectList(wrapper)
-        PageHelper.clearPage()
-        return page
+    override fun selectPageByEntity(page: Page<T>, entity: T): Page<T> {
+        return this.selectPage(page, EntityWrapper(entity))
     }
 
 }
