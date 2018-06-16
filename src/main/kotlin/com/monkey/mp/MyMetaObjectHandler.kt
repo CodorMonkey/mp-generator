@@ -1,4 +1,4 @@
-package com.monkey.base.mp
+package com.monkey.mp
 
 import com.baomidou.mybatisplus.mapper.MetaObjectHandler
 import org.apache.ibatis.reflection.MetaObject
