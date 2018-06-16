@@ -57,7 +57,7 @@ class MyVelocityEngine : VelocityTemplateEngine() {
                 }
                 // IMpService.java
                 if (null != tableInfo.serviceName) {
-                    val serviceFile = String.format(pathInfo[ConstVal.SERIVCE_PATH] + File.separator + tableInfo.serviceName + this.suffixJavaOrKt(), entityName)
+                    val serviceFile = String.format(pathInfo[ConstVal.SERVICE_PATH] + File.separator + tableInfo.serviceName + this.suffixJavaOrKt(), entityName)
                     if (this.isCreate(serviceFile)) {
                         this.writer(objectMap, this.templateFilePath(template.service), serviceFile)
                     }
