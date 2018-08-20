@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.generator.config.*
 import com.baomidou.mybatisplus.generator.config.po.TableFill
 import com.baomidou.mybatisplus.generator.config.po.TableInfo
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy
+import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine
 import com.monkey.mp.generator.engine.MyVelocityEngine
 import java.io.File
 import java.util.*
@@ -147,7 +148,7 @@ object MpGenerator {
             )
 
         // 执行生成
-        mpg.templateEngine = MyVelocityEngine()
+        mpg.templateEngine = VelocityTemplateEngine()
         mpg.execute()
     }
 }
