@@ -15,7 +15,7 @@ import ${superMapperClassPackage}
  *
  * @author ${author}
  */
-internal interface ${table.mapperName} : ${superMapperClass}<${entity}> {
+interface ${table.mapperName} : ${superMapperClass}<${entity}> {
 //==== 自定义开始 ====
 #if(${cfg[$module]["${table.mapperName}"]})
     ${cfg[$module]["${table.mapperName}"].content}

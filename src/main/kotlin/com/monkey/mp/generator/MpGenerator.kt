@@ -23,7 +23,7 @@ object MpGenerator {
                  author: String = "",
                  dbConfig: DatabaseConfig,
                  arrInclude: Array<String> = arrayOf(),
-                 arrexclude: Array<String> = arrayOf("schema_version"),
+                 arrexclude: Array<String> = arrayOf("schema_version", "flyway_schema_history"),
                  language: ProgramingLanguage = ProgramingLanguage.JAVA) {
         val codeAbsolutePath = "${codePath.trimEnd(File.separatorChar)}${File.separator}"
         val xmlAbsolutePath = "${xmlPath.trimEnd(File.separatorChar)}${File.separator}"
@@ -37,6 +37,8 @@ object MpGenerator {
         if (language == ProgramingLanguage.KOTLIN) {
             extName = "kt"
         }
+
+        val mpPackage = packageName.substringBeforeLast('.') + ".mp"
 
         // 策略配置
         val strategyConfig = StrategyConfig()
@@ -52,9 +54,9 @@ object MpGenerator {
             // 自定义 mapper 父类
             // .setSuperMapperClass("com.baomidou.demo.TestMapper")
             // 自定义 service 父类
-             .setSuperServiceClass("com.monkey.mp.IDefaultService")
+             .setSuperServiceClass("$mpPackage.IDefaultService")
             // 自定义 service 实现类父类
-             .setSuperServiceImplClass("com.monkey.mp.impl.DefaultServiceImpl")
+             .setSuperServiceImplClass("$mpPackage.impl.DefaultServiceImpl")
             // 自定义 controller 父类
             // .setSuperControllerClass("com.baomidou.demo.TestController")
             // 【实体】是否生成字段常量（默认 false）
