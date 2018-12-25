@@ -1,0 +1,48 @@
+package ${basePackage}.core.advice
+
+import com.alibaba.fastjson.JSON
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import ${basePackage}.core.result.DataResult
+import ${basePackage}.core.result.PageResult
+import ${basePackage}.core.anno.NoPacking
+import org.springframework.core.MethodParameter
+import org.springframework.http.MediaType
+import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.http.server.ServerHttpRequest
+import org.springframework.http.server.ServerHttpResponse
+import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
+
+/**
+ * author：Monkey
+ * date：2018/8/20
+ */
+@RestControllerAdvice
+class JsonResponseAdvice : ResponseBodyAdvice<Any> {
+    override fun supports(parameter: MethodParameter, clazz: Class<out HttpMessageConverter<*>>): Boolean {
+        return true
+    }
+
+    override fun beforeBodyWrite(returnValue: Any?,
+                                 parameter: MethodParameter,
+                                 mediaType: MediaType,
+                                 clazz: Class<out HttpMessageConverter<*>>,
+                                 req: ServerHttpRequest,
+                                 res: ServerHttpResponse): Any? {
+        return when (returnValue) {
+            is PageResult,
+            is DataResult
+                       -> returnValue
+            is Page<*> -> PageResult.buildSuccess(page = returnValue)
+            is String  -> {
+                val nopacking = parameter.method?.getDeclaredAnnotation(NoPacking::class.java)
+                if (nopacking == null) {
+                    JSON.toJSONString(DataResult.buildSuccess(data = returnValue))
+                } else {
+                    returnValue
+                }
+            }
+            else       -> DataResult.buildSuccess(data = returnValue)
+        }
+    }
+}

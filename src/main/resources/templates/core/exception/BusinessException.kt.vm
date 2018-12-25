@@ -1,0 +1,10 @@
+package ${basePackage}.core.exception
+
+import ${basePackage}.core.enums.ResultCodeEnum
+
+/**
+ * Created by Monkey on 2017/6/18.
+ */
+class BusinessException(var code: Int, message: String) : RuntimeException(message) {
+    constructor(codeEnum: ResultCodeEnum) : this(codeEnum.code, codeEnum.msg)
+}

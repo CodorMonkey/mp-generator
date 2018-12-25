@@ -1,0 +1,50 @@
+package ${basePackage}.core.advice
+
+import ${basePackage}.core.enums.ResultCodeEnum
+import ${basePackage}.core.exception.BusinessException
+import ${basePackage}.core.result.DataResult
+import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.validation.BindException
+import org.springframework.validation.BindingResult
+import org.springframework.web.HttpMediaTypeNotSupportedException
+import org.springframework.web.HttpRequestMethodNotSupportedException
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RestControllerAdvice
+import java.util.*
+
+/**
+ * Created by Monkey on 2017/6/18.
+ */
+@RestControllerAdvice
+class ExceptionAdvice {
+    @ExceptionHandler(Exception::class)
+    fun handleError(e: Exception): DataResult {
+        return when (e) {
+            is BusinessException                      -> DataResult.buildError(e.code, e.message)
+            is BindException                          -> {
+                val errors = listFieldErrorsHumanly(e.bindingResult)
+                DataResult.buildError(ResultCodeEnum.PARAMS_ERROR.code, errors.joinToString())
+            }
+            is HttpMessageNotReadableException        -> DataResult.buildError(ResultCodeEnum.PARAMS_ERROR)
+            is HttpRequestMethodNotSupportedException -> DataResult.buildError(ResultCodeEnum.METHOD_NOT_SUPPORT_ERROR)
+            is HttpMediaTypeNotSupportedException     -> DataResult.buildError(ResultCodeEnum.MEDIA_TYPE_NOT_SUPPORT_ERROR)
+            else                                      -> {
+                e.printStackTrace()
+                DataResult.buildError(ResultCodeEnum.SYSTEM_ERROR)
+            }
+        }
+    }
+
+    private fun listFieldErrorsHumanly(result: BindingResult): List<*> {
+        val fieldErrors = result.fieldErrors
+
+        val list = ArrayList<String>()
+        fieldErrors.forEach {
+            val msg = it.defaultMessage
+            if (!msg.isNullOrBlank()) {
+                list.add(msg)
+            }
+        }
+        return list
+    }
+}

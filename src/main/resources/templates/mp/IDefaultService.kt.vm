@@ -1,0 +1,15 @@
+package ${basePackage}.mp
+
+import com.baomidou.mybatisplus.core.metadata.IPage
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import com.baomidou.mybatisplus.extension.service.IService
+
+/**
+ * 作者：Monkey
+ * 日期：2017/10/23
+ */
+interface IDefaultService<T>: IService<T> {
+    fun selectByEntity(entity: T): List<T>
+
+    fun selectPageByEntity(page: Page<T>, entity: T): IPage<T>?
+}

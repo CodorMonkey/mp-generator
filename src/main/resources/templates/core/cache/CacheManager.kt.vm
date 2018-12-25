@@ -1,0 +1,54 @@
+package ${basePackage}.core.cache
+
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
+import javax.annotation.PostConstruct
+
+
+/**
+ * @author Monkey
+ * *
+ * @Description: 缓存管理
+ * *
+ * @date 2017年7月13日
+ */
+@Component
+class CacheManager {
+
+    @Autowired
+    private var caffeineCacheManager: org.springframework.cache.CacheManager? = null
+
+    @PostConstruct
+    fun init() {
+        cacheManager = this
+        cacheManager!!.caffeineCacheManager = this.caffeineCacheManager
+    }
+
+    companion object {
+
+        private var cacheManager: CacheManager? = null
+
+        operator fun get(cacheType: CacheType, key: Any): Any {
+            return cacheManager!!.caffeineCacheManager!!.getCache(cacheType.name)!!.get(key)!!
+        }
+
+        operator fun <T> get(cacheType: CacheType, key: Any, clazz: Class<*>): T? {
+            return cacheManager!!.caffeineCacheManager!!.getCache(cacheType.name)!!.get(key, clazz) as T
+        }
+
+        @Synchronized
+        fun put(cacheType: CacheType, key: Any, value: Any) {
+            cacheManager!!.caffeineCacheManager!!.getCache(cacheType.name)!!.put(key, value)
+        }
+
+        @Synchronized
+        fun del(cacheType: CacheType, key: Any) {
+            cacheManager!!.caffeineCacheManager!!.getCache(cacheType.name)!!.evict(key)
+        }
+
+        fun clear(cacheType: CacheType) {
+            cacheManager!!.caffeineCacheManager!!.getCache(cacheType.name)!!.clear()
+        }
+    }
+
+}

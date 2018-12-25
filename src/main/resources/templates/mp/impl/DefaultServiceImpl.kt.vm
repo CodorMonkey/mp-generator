@@ -1,0 +1,23 @@
+package ${basePackage}.mp.impl
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
+import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import com.baomidou.mybatisplus.core.metadata.IPage
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
+import ${basePackage}.mp.IDefaultService
+
+/**
+ * 作者：Monkey
+ * 日期：2017/10/23
+ */
+open class DefaultServiceImpl<M : BaseMapper<T>, T> : ServiceImpl<M, T>(), IDefaultService<T> {
+    override fun selectByEntity(entity: T): List<T> {
+        return this.list(QueryWrapper(entity))
+    }
+
+    override fun selectPageByEntity(page: Page<T>, entity: T): IPage<T>? {
+        return this.page(page, QueryWrapper(entity))
+    }
+
+}

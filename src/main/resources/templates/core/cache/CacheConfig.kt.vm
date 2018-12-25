@@ -1,0 +1,72 @@
+package ${basePackage}.core.cache
+
+import com.github.benmanes.caffeine.cache.Caffeine
+import org.springframework.cache.CacheManager
+import org.springframework.cache.annotation.EnableCaching
+import org.springframework.cache.caffeine.CaffeineCache
+import org.springframework.cache.support.SimpleCacheManager
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
+import java.util.*
+import java.util.concurrent.TimeUnit
+
+/**
+ * @author Monkey
+ * *
+ * @Description: Cache配置類，用于缓存数据
+ * *
+ * @date 2017年7月13日
+ */
+@Configuration
+@EnableCaching
+class CacheConfig {
+
+    /**
+     * 创建基于Caffeine的Cache Manager
+
+     * @return
+     */
+    @Bean
+    @Primary
+    fun caffeineCacheManager(): CacheManager {
+        val cacheManager = SimpleCacheManager()
+
+        val caches = ArrayList<CaffeineCache>()
+        for (cache in CacheType.values()) {
+            if (cache.ttl > 0) {
+                caches.add(CaffeineCache(cache.name,
+                    Caffeine.newBuilder()
+                        .recordStats()
+                        .expireAfterWrite(cache.ttl.toLong(), TimeUnit.SECONDS)
+                        .maximumSize(cache.maxSize.toLong())
+                        .build<Any, Any>()))
+            } else if (cache.ttl == 0) {
+                caches.add(CaffeineCache(cache.name,
+                    Caffeine.newBuilder()
+                        .recordStats()
+                        .maximumSize(cache.maxSize.toLong())
+                        .build<Any, Any>()))
+            }
+
+        }
+
+        cacheManager.setCaches(caches)
+
+        return cacheManager
+    }
+
+    companion object {
+
+        /**
+         * @Fields DEFAULT_MAXSIZE : 最大连接数
+         */
+        val DEFAULT_MAXSIZE = 50000
+
+        /**
+         * @Fields 默认超时时间
+         */
+        val DEFAULT_TTL = 10
+    }
+
+}

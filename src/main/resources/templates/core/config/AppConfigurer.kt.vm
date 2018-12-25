@@ -1,0 +1,20 @@
+package ${basePackage}.core.config
+
+import ${basePackage}.core.interceptor.AuthInterceptor
+import org.springframework.context.annotation.Configuration
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+
+/**
+ * author：Monkey
+ * date：2018/8/21
+ */
+@Configuration
+class AppConfigurer : WebMvcConfigurer {
+    override fun addInterceptors(registry: InterceptorRegistry) {
+        registry.addInterceptor(AuthInterceptor())
+            .excludePathPatterns("/swagger-*/**", "/v2/**")  // 不拦截swagger ui
+
+        super.addInterceptors(registry)
+    }
+}

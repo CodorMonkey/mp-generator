@@ -1,0 +1,7 @@
+package ${basePackage}.core.anno
+
+/**
+ * author：Monkey
+ * date：2018/8/24
+ */
+annotation class NoPacking
