@@ -46,8 +46,8 @@ open class ${entity} : Serializable {
     ## -----   存在字段填充设置   -----
         #if(${field.convert})
         @TableField(value = "${field.name}", fill = FieldFill.${field.fill})
-        #else
-        @TableField(fill = FieldFill.${field.fill})
+        #elseif(${field.fill} == "UPDATE")
+        @TableField(update = "now()")
         #end
     #elseif(${field.convert})
     @TableField("${field.name}")
@@ -60,11 +60,7 @@ open class ${entity} : Serializable {
     #if(${logicDeleteFieldName}==${field.name})
     @TableLogic
     #end
-    #set($propertyType=${field.propertyType})
-    #if($propertyType == "Integer")
-        #set($propertyType="Int")
-    #end
-var ${field.propertyName}: ${propertyType}? = null
+var ${field.propertyName}: ${field.propertyType}? = null
 #end
 ## ----------  END 字段循环遍历  ----------
 
@@ -92,8 +88,8 @@ var ${field.propertyName}: ${propertyType}? = null
     override fun toString(): String {
         return "${entity}{" +
             #foreach($field in ${table.fields})
-                #if($!{velocityCount}==1)
-                    "${field.propertyName}=" + ${field.propertyName} +
+                #if($!{foreach.index}==0)
+               "${field.propertyName}=" + ${field.propertyName} +
                 #else
                 ", ${field.propertyName}=" + ${field.propertyName} +
                 #end

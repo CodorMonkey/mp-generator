@@ -1,4 +1,4 @@
-package com.monkey.mp.generator
+package com.monkey.generator
 
 import java.io.File
 import java.nio.charset.Charset

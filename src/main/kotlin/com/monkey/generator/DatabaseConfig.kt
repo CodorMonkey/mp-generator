@@ -1,6 +1,6 @@
-package com.monkey.mp.generator
+package com.monkey.generator
 
-import com.baomidou.mybatisplus.generator.config.rules.DbType
+import com.baomidou.mybatisplus.annotation.DbType
 
 /**
  * 作者：Monkey

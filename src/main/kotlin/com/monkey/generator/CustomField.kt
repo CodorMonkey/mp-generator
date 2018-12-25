@@ -1,4 +1,4 @@
-package com.monkey.mp.generator
+package com.monkey.generator
 
 /**
  * 作者：Monkey

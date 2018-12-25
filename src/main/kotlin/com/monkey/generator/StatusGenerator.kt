@@ -1,7 +1,7 @@
-package com.monkey.mp.generator
+package com.monkey.generator
 
 import com.baomidou.mybatisplus.generator.config.ConstVal
-import com.baomidou.mybatisplus.toolkit.StringUtils
+import org.apache.commons.lang.StringUtils
 import org.apache.ibatis.logging.LogFactory
 import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.Velocity

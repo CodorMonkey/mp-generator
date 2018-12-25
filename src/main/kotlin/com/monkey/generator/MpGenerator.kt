@@ -1,14 +1,13 @@
-package com.monkey.mp.generator
+package com.monkey.generator
 
-import com.baomidou.mybatisplus.enums.FieldFill
+import com.baomidou.mybatisplus.annotation.FieldFill
 import com.baomidou.mybatisplus.generator.AutoGenerator
 import com.baomidou.mybatisplus.generator.InjectionConfig
 import com.baomidou.mybatisplus.generator.config.*
 import com.baomidou.mybatisplus.generator.config.po.TableFill
 import com.baomidou.mybatisplus.generator.config.po.TableInfo
+import com.baomidou.mybatisplus.generator.config.rules.DateType
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy
-import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine
-import com.monkey.mp.generator.engine.MyVelocityEngine
 import java.io.File
 import java.util.*
 
@@ -19,56 +18,42 @@ import java.util.*
 object MpGenerator {
     fun generate(codePath: String,
                  xmlPath: String,
-                 packageName: String,
+                 basePackage: String,
                  author: String = "",
                  dbConfig: DatabaseConfig,
                  arrInclude: Array<String> = arrayOf(),
                  arrexclude: Array<String> = arrayOf("schema_version", "flyway_schema_history"),
-                 language: ProgramingLanguage = ProgramingLanguage.JAVA) {
+                 language: ProgramingLanguage = ProgramingLanguage.JAVA,
+                 initCore: Boolean = false) {
         val codeAbsolutePath = "${codePath.trimEnd(File.separatorChar)}${File.separator}"
         val xmlAbsolutePath = "${xmlPath.trimEnd(File.separatorChar)}${File.separator}"
 
         // 自定义需要填充的字段
         val tableFillList = ArrayList<TableFill>()
-        tableFillList.add(TableFill("create_time", FieldFill.INSERT))
-        tableFillList.add(TableFill("update_time", FieldFill.INSERT_UPDATE))
+//        tableFillList.add(TableFill("create_time", FieldFill.INSERT))
+        tableFillList.add(TableFill("update_time", FieldFill.UPDATE))
 
         var extName = "java"
         if (language == ProgramingLanguage.KOTLIN) {
             extName = "kt"
         }
 
-        val mpPackage = packageName.substringBeforeLast('.') + ".mp"
+        val bizPackage = "$basePackage.biz"
+        val mpPackage = "$basePackage.mp"
 
         // 策略配置
         val strategyConfig = StrategyConfig()
-            // .setCapitalMode(true)// 全局大写命名
             // .setDbColumnUnderline(true)//全局下划线命名
-            .setTablePrefix("T_")// 此处可以修改为您的表前缀
-            .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-            // 自定义实体父类
-            // .setSuperEntityClass("com.baomidou.demo.TestEntity")
+            .setTablePrefix("T_") // 此处可以修改为您的表前缀
+            .setNaming(NamingStrategy.underline_to_camel) // 表名生成策略
+            //            .setColumnNaming(NamingStrategy.underline_to_camel)
             // 自定义实体，公共字段
-//                .setSuperEntityColumns(arrayOf("createTime", "updateTime"))
             .setTableFillList(tableFillList)
-            // 自定义 mapper 父类
-            // .setSuperMapperClass("com.baomidou.demo.TestMapper")
             // 自定义 service 父类
-             .setSuperServiceClass("$mpPackage.IDefaultService")
+            .setSuperServiceClass("$mpPackage.IDefaultService")
             // 自定义 service 实现类父类
-             .setSuperServiceImplClass("$mpPackage.impl.DefaultServiceImpl")
-            // 自定义 controller 父类
-            // .setSuperControllerClass("com.baomidou.demo.TestController")
-            // 【实体】是否生成字段常量（默认 false）
-            // public static final String ID = "test_id";
-            // .setEntityColumnConstant(true)
-            // 【实体】是否为构建者模型（默认 false）
-            // public User setName(String name) {this.name = name; return this;}
-            // .setEntityBuilderModel(true)
-            // 【实体】是否为lombok模型（默认 false）<a href="https://projectlombok.org/">document</a>
-//                 .setEntityLombokModel(true)
-            // Boolean类型字段是否移除is前缀处理
-            // .setEntityBooleanColumnRemoveIsPrefix(true)
+            .setSuperServiceImplClass("$mpPackage.impl.DefaultServiceImpl")
+            //                 .setEntityLombokModel(true)
             .setRestControllerStyle(true)
         // .setControllerMappingHyphenStyle(true)
         if (arrInclude.isNotEmpty()) {
@@ -80,32 +65,31 @@ object MpGenerator {
         // 全局配置
         val globalConfig = GlobalConfig()
             .setOpen(false)
-            .setOutputDir(codeAbsolutePath)//输出目录
-            .setFileOverride(true)// 是否覆盖文件
-            .setActiveRecord(false)// 开启 activeRecord 模式
-            .setEnableCache(false)// XML 二级缓存
-            .setBaseResultMap(true)// XML ResultMap
-            .setBaseColumnList(true)// XML columList
+            .setOutputDir(codeAbsolutePath) //输出目录
+            .setFileOverride(true) // 是否覆盖文件
+            .setActiveRecord(false) // 开启 activeRecord 模式
+            .setEnableCache(false) // XML 二级缓存
+            .setBaseResultMap(true) // XML ResultMap
+            .setBaseColumnList(true) // XML columList
             .setAuthor(author)
             .setKotlin(language == ProgramingLanguage.KOTLIN)
-        // 自定义文件命名，注意 %s 会自动填充表实体属性！
-        // .setMapperName("%sDao")
-        // .setXmlName("%sDao")
-        // .setServiceName("MP%sService")
-        // .setServiceImplName("%sServiceDiy")
-        // .setControllerName("%sAction")
+            // 自定义文件命名，注意 %s 会自动填充表实体属性！
+            .setEntityName("%sPo")
+            .setDateType(DateType.SQL_PACK)
 
         // 数据源配置
         val dataSourceConfig = DataSourceConfig()
-            .setDbType(dbConfig.dbType)// 数据库类型
+            .setDbType(dbConfig.dbType) // 数据库类型
             .setDriverName(dbConfig.driver)
             .setUsername(dbConfig.user)
             .setPassword(dbConfig.pwd)
             .setUrl(dbConfig.url)
+
         // 包配置
         val packageConfig = PackageConfig()
-            .setParent(packageName)// 自定义包路径
+            .setParent(bizPackage) // 自定义包路径
             .setController("controller") // 这里是控制器包名，默认 web
+            .setEntity("entity.po")    // 实体类包名
 
         // 代码生成器
         val mpg = AutoGenerator()
@@ -126,13 +110,13 @@ object MpGenerator {
                             if (it.comment?.isNotBlank() == true) {
                                 StatusGenerator.generate(
                                     codePath = codePath,
-                                    packageName = "${packageName}.constants",
+                                    packageName = "$bizPackage.constants",
                                     str = it.comment,
                                     author = author
                                 )
                             }
                         }
-                        return "$xmlAbsolutePath${tableInfo.entityName}Mapper.xml"
+                        return "$xmlAbsolutePath${tableInfo.xmlName}.xml"
                     }
                 }))
             )
@@ -143,14 +127,20 @@ object MpGenerator {
                     // 自定义模板配置，模板可以参考源码 /mybatis-plus/src/main/resources/template 使用 copy
                     // 至您项目 src/main/resources/template 目录下，模板名称也可自定义如下配置：
                     .setController(null)
-//                    .setEntity("/templates/entity.java.vm")
+                    //                    .setEntity("/templates/entity.java.vm")
                     .setMapper("/templates/mapper.$extName.vm")
                     .setService("/templates/service.$extName.vm")
                     .setServiceImpl("/templates/serviceImpl.$extName.vm")
             )
 
         // 执行生成
-        mpg.templateEngine = VelocityTemplateEngine()
         mpg.execute()
+
+        if (initCore) {
+            PackageDuplicator(
+                listOf("mp", "core"),
+                codePath,
+                basePackage).duplicate()
+        }
     }
 }
