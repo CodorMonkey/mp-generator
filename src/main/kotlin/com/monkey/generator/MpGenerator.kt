@@ -1,6 +1,7 @@
 package com.monkey.generator
 
 import com.baomidou.mybatisplus.annotation.FieldFill
+import com.baomidou.mybatisplus.annotation.IdType
 import com.baomidou.mybatisplus.generator.AutoGenerator
 import com.baomidou.mybatisplus.generator.InjectionConfig
 import com.baomidou.mybatisplus.generator.config.*
@@ -30,7 +31,7 @@ object MpGenerator {
 
         // 自定义需要填充的字段
         val tableFillList = ArrayList<TableFill>()
-//        tableFillList.add(TableFill("create_time", FieldFill.INSERT))
+        //        tableFillList.add(TableFill("create_time", FieldFill.INSERT))
         tableFillList.add(TableFill("update_time", FieldFill.UPDATE))
 
         var extName = "java"
@@ -75,7 +76,8 @@ object MpGenerator {
             .setKotlin(language == ProgramingLanguage.KOTLIN)
             // 自定义文件命名，注意 %s 会自动填充表实体属性！
             .setEntityName("%sPo")
-            .setDateType(DateType.SQL_PACK)
+//            .setDateType(DateType.SQL_PACK)
+            .setIdType(IdType.AUTO)
 
         // 数据源配置
         val dataSourceConfig = DataSourceConfig()

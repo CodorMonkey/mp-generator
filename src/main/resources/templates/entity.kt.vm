@@ -44,7 +44,7 @@ open class ${entity} : Serializable {
     ## 普通字段
     #elseif(${field.fill})
     ## -----   存在字段填充设置   -----
-        #if(${field.convert})
+        #if(${field.convert} && ${field.fill} != "UPDATE")
         @TableField(value = "${field.name}", fill = FieldFill.${field.fill})
         #elseif(${field.fill} == "UPDATE")
         @TableField(update = "now()")
