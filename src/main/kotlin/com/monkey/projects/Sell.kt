@@ -1,8 +1,8 @@
 package com.monkey.projects
 
-import com.monkey.mp.generator.DatabaseConfig
-import com.monkey.mp.generator.MpGenerator
-import com.monkey.mp.generator.ProgramingLanguage
+import com.monkey.generator.DatabaseConfig
+import com.monkey.generator.MpGenerator
+import com.monkey.generator.ProgramingLanguage
 
 /**
  * 作者：Monkey
@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
     MpGenerator.generate(
         codePath = "D:\\study\\kotlin\\sell\\src\\main\\kotlin",
         xmlPath = "D:\\study\\kotlin\\sell\\src\\main\\resources\\mapper",
-        packageName = "com.monkey.sell.business",
+        basePackage = "com.monkey.sell.business",
         author = author,
         dbConfig = dbConfig,
         language = ProgramingLanguage.KOTLIN

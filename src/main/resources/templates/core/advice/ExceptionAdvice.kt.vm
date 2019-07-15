@@ -2,7 +2,8 @@ package ${basePackage}.core.advice
 
 import ${basePackage}.core.enums.ResultCodeEnum
 import ${basePackage}.core.exception.BusinessException
-import ${basePackage}.core.result.DataResult
+import ${basePackage}.core.result.BaseResponse
+import org.slf4j.LoggerFactory
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.validation.BindException
 import org.springframework.validation.BindingResult
@@ -17,20 +18,25 @@ import java.util.*
  */
 @RestControllerAdvice
 class ExceptionAdvice {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     @ExceptionHandler(Exception::class)
-    fun handleError(e: Exception): DataResult {
+    fun handleError(e: Exception): BaseResponse {
         return when (e) {
-            is BusinessException                      -> DataResult.buildError(e.code, e.message)
+            is BusinessException                      -> BaseResponse.buildError(e.code, e.message)
             is BindException                          -> {
                 val errors = listFieldErrorsHumanly(e.bindingResult)
-                DataResult.buildError(ResultCodeEnum.PARAMS_ERROR.code, errors.joinToString())
+                BaseResponse.buildError(ResultCodeEnum.PARAMS_ERROR.code, errors.joinToString())
             }
-            is HttpMessageNotReadableException        -> DataResult.buildError(ResultCodeEnum.PARAMS_ERROR)
-            is HttpRequestMethodNotSupportedException -> DataResult.buildError(ResultCodeEnum.METHOD_NOT_SUPPORT_ERROR)
-            is HttpMediaTypeNotSupportedException     -> DataResult.buildError(ResultCodeEnum.MEDIA_TYPE_NOT_SUPPORT_ERROR)
+            is HttpMessageNotReadableException        -> {
+                logger.error(e.message)
+                BaseResponse.buildError(ResultCodeEnum.PARAMS_ERROR)
+            }
+            is HttpRequestMethodNotSupportedException -> BaseResponse.buildError(ResultCodeEnum.METHOD_NOT_SUPPORT_ERROR)
+            is HttpMediaTypeNotSupportedException     -> BaseResponse.buildError(ResultCodeEnum.MEDIA_TYPE_NOT_SUPPORT_ERROR)
             else                                      -> {
                 e.printStackTrace()
-                DataResult.buildError(ResultCodeEnum.SYSTEM_ERROR)
+                BaseResponse.buildError(ResultCodeEnum.SYSTEM_ERROR)
             }
         }
     }

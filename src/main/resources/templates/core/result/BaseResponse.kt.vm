@@ -1,0 +1,24 @@
+package ${basePackage}.core.result
+
+import ${basePackage}.core.enums.ResultCodeEnum
+
+/**
+ * Created by Monkey on 2017/6/16.
+ */
+open class BaseResponse constructor(var code: Int, var message: String?, var data: Any? = null) {
+    companion object {
+        fun buildSuccess(msg: String = "", data: Any? = null) = BaseResponse(0, msg, data)
+
+        fun buildSuccess(codeEnum: ResultCodeEnum, data: Any? = null) = buildSuccess(codeEnum.msg, data)
+
+        fun buildError(code: Int, errMsg: String?) = BaseResponse(code, errMsg)
+
+        fun buildError(codeEnum: ResultCodeEnum) = buildError(codeEnum.code, codeEnum.msg)
+    }
+}
+
+open class PageResult constructor(var pageNo: Long,
+                                  var pageSize: Long,
+                                  var total: Long,
+                                  var pages: Long,
+                                  var results: List<Any?>)

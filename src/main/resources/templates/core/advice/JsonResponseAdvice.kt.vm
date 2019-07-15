@@ -2,9 +2,9 @@ package ${basePackage}.core.advice
 
 import com.alibaba.fastjson.JSON
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
-import ${basePackage}.core.result.DataResult
-import ${basePackage}.core.result.PageResult
 import ${basePackage}.core.anno.NoPacking
+import ${basePackage}.core.result.BaseResponse
+import ${basePackage}.core.result.PageResult
 import org.springframework.core.MethodParameter
 import org.springframework.http.MediaType
 import org.springframework.http.converter.HttpMessageConverter
@@ -29,20 +29,31 @@ class JsonResponseAdvice : ResponseBodyAdvice<Any> {
                                  clazz: Class<out HttpMessageConverter<*>>,
                                  req: ServerHttpRequest,
                                  res: ServerHttpResponse): Any? {
+        val uri = req.uri
+        val reqPath = uri.path
+
+        if (reqPath.contains("/swagger-") || reqPath.contains("/v2/api-docs")) {
+            return returnValue
+        }
+
         return when (returnValue) {
-            is PageResult,
-            is DataResult
+            is BaseResponse
                        -> returnValue
-            is Page<*> -> PageResult.buildSuccess(page = returnValue)
+            is Page<*> -> {
+                val pageResult = PageResult(
+                    returnValue.current, returnValue.size, returnValue.total, returnValue.pages, returnValue.records
+                )
+                BaseResponse.buildSuccess(data = pageResult)
+            }
             is String  -> {
                 val nopacking = parameter.method?.getDeclaredAnnotation(NoPacking::class.java)
                 if (nopacking == null) {
-                    JSON.toJSONString(DataResult.buildSuccess(data = returnValue))
+                    JSON.toJSONString(BaseResponse.buildSuccess(data = returnValue))
                 } else {
                     returnValue
                 }
             }
-            else       -> DataResult.buildSuccess(data = returnValue)
+            else       -> BaseResponse.buildSuccess(data = returnValue)
         }
     }
 }

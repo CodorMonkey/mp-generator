@@ -2,7 +2,7 @@ package ${basePackage}.core.interceptor
 
 import com.alibaba.fastjson.JSON
 import ${basePackage}.core.enums.ResultCodeEnum
-import ${basePackage}.core.result.DataResult
+import ${basePackage}.core.result.BaseResponse
 import org.slf4j.LoggerFactory
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
@@ -36,7 +36,7 @@ class AuthInterceptor : HandlerInterceptor {
         var writer: PrintWriter? = null
         try {
             writer = response.writer
-            val result = DataResult.buildError(ResultCodeEnum.PERMISSION_DENIED_ERROR)
+            val result = BaseResponse.buildError(ResultCodeEnum.PERMISSION_DENIED_ERROR)
             writer!!.print(JSON.toJSON(result))
             writer.flush()
         } catch (e: IOException) {

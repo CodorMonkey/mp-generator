@@ -6,6 +6,7 @@ package ${basePackage}.core.enums
 enum class ResultCodeEnum(val code: Int, val msg: String) {
     SYSTEM_ERROR(-1, "未知错误"),
     SUCCESS(0, "操作成功"),
+    FAILURE(400, "操作失败"),
     PERMISSION_DENIED_ERROR(403, "您没有权限"),
     PARAMS_ERROR(500, "无效的参数"),
     DATA_DUPLICATE_ERROR(501, "数据重复错误"),

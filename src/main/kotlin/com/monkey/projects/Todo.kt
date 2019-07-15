@@ -27,6 +27,6 @@ fun main(args: Array<String>) {
         author = author,
         dbConfig = dbConfig,
         language = ProgramingLanguage.KOTLIN,
-        initCore = false
+        initCore = true
     )
 }
