@@ -48,7 +48,7 @@ class ExceptionAdvice {
         fieldErrors.forEach {
             val msg = it.defaultMessage
             if (!msg.isNullOrBlank()) {
-                list.add(msg)
+                list.add(msg!!)
             }
         }
         return list
