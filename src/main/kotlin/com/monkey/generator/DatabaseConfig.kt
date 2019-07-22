@@ -11,5 +11,6 @@ data class DatabaseConfig(
     var driver: String = "com.mysql.jdbc.Driver",
     var user: String,
     var pwd: String,
-    var url: String
+    var url: String,
+    val schemaName: String? = null
 )

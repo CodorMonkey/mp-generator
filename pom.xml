@@ -24,7 +24,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <kotlin.version>1.3.21</kotlin.version>
-    <mybatisplus-boot-starter.version>3.0.7.1</mybatisplus-boot-starter.version>
+    <mybatisplus-boot-starter.version>3.1.2</mybatisplus-boot-starter.version>
     <app-name>mp</app-name>
     <start-class>com.monkey.ApplicationKt</start-class>
   </properties>
