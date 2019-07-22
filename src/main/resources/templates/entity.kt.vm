@@ -1,7 +1,11 @@
 package ${package.Entity}
 
 #foreach($pkg in ${table.importPackages})
-import ${pkg}
+import ${pkg};
+#end
+#if(${swagger2})
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 #end
 
 /**
@@ -13,6 +17,9 @@ import ${pkg}
  */
 #if(${table.convert})
 @TableName("${table.name}")
+#end
+#if(${swagger2})
+@ApiModel(value="${entity}对象", description="""$!{table.comment}""")
 #end
 #if(${superEntityClass})
 open class ${entity} : ${superEntityClass}#if(${activeRecord})<${entity}>#end() {
@@ -28,9 +35,13 @@ open class ${entity} : Serializable {
         #set($keyPropertyName=${field.propertyName})
     #end
     #if("$!field.comment" != "")
+        #if(${swagger2})
+        @ApiModelProperty(value = """${field.comment}""")
+        #else
         /**
          * ${field.comment}
          */
+        #end
     #end
     #if(${field.keyFlag})
     ## 主键
@@ -48,6 +59,8 @@ open class ${entity} : Serializable {
         @TableField(value = "${field.name}", fill = FieldFill.${field.fill})
         #elseif(${field.fill} == "UPDATE")
         @TableField(update = "now()")
+        #else
+        @TableField(fill = FieldFill.${field.fill})
         #end
     #elseif(${field.convert})
     @TableField("${field.name}")
@@ -60,7 +73,11 @@ open class ${entity} : Serializable {
     #if(${logicDeleteFieldName}==${field.name})
     @TableLogic
     #end
-var ${field.propertyName}: ${field.propertyType}? = null
+    #if(${field.propertyType} == "Integer")
+    var ${field.propertyName}: Int? = null
+    #else
+        var ${field.propertyName}: ${field.propertyType}? = null
+    #end
 #end
 ## ----------  END 字段循环遍历  ----------
 
@@ -76,11 +93,11 @@ var ${field.propertyName}: ${field.propertyType}? = null
 
 #end
 #if(${activeRecord})
-    override fun pkVal(): Serializable {
+    override fun pkVal(): Serializable? {
         #if(${keyPropertyName})
-        return ${keyPropertyName}!!
+            return ${keyPropertyName}
         #else
-        return id!!
+            return null
         #end
     }
 

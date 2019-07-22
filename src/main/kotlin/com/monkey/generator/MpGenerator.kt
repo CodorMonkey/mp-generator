@@ -51,9 +51,9 @@ object MpGenerator {
             // 自定义实体，公共字段
             .setTableFillList(tableFillList)
             // 自定义 service 父类
-            .setSuperServiceClass("$mpPackage.IDefaultService")
+//            .setSuperServiceClass("$mpPackage.IDefaultService")
             // 自定义 service 实现类父类
-            .setSuperServiceImplClass("$mpPackage.impl.DefaultServiceImpl")
+//            .setSuperServiceImplClass("$mpPackage.impl.DefaultServiceImpl")
             //                 .setEntityLombokModel(true)
             .setRestControllerStyle(true)
         // .setControllerMappingHyphenStyle(true)
@@ -68,7 +68,7 @@ object MpGenerator {
             .setOpen(false)
             .setOutputDir(codeAbsolutePath) //输出目录
             .setFileOverride(true) // 是否覆盖文件
-            .setActiveRecord(false) // 开启 activeRecord 模式
+            .setActiveRecord(true) // 开启 activeRecord 模式
             .setEnableCache(false) // XML 二级缓存
             .setBaseResultMap(true) // XML ResultMap
             .setBaseColumnList(true) // XML columList
@@ -78,6 +78,7 @@ object MpGenerator {
             .setEntityName("%sPo")
 //            .setDateType(DateType.SQL_PACK)
             .setIdType(IdType.AUTO)
+            .setSwagger2(true)
 
         // 数据源配置
         val dataSourceConfig = DataSourceConfig()
@@ -86,6 +87,7 @@ object MpGenerator {
             .setUsername(dbConfig.user)
             .setPassword(dbConfig.pwd)
             .setUrl(dbConfig.url)
+            .setSchemaName(dbConfig.schemaName)
 
         // 包配置
         val packageConfig = PackageConfig()
@@ -130,9 +132,11 @@ object MpGenerator {
                     // 至您项目 src/main/resources/template 目录下，模板名称也可自定义如下配置：
                     .setController(null)
                     //                    .setEntity("/templates/entity.java.vm")
+                    .setService(null)
+                    .setServiceImpl(null)
                     .setMapper("/templates/mapper.$extName.vm")
-                    .setService("/templates/service.$extName.vm")
-                    .setServiceImpl("/templates/serviceImpl.$extName.vm")
+//                    .setService("/templates/service.$extName.vm")
+//                    .setServiceImpl("/templates/serviceImpl.$extName.vm")
             )
 
         // 执行生成
