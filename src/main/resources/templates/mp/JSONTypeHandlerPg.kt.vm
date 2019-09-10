@@ -1,0 +1,45 @@
+package ${basePackage}.mp
+
+
+import org.apache.ibatis.type.BaseTypeHandler
+import org.apache.ibatis.type.JdbcType
+import org.apache.ibatis.type.MappedTypes
+import org.postgresql.util.PGobject
+
+import java.sql.CallableStatement
+import java.sql.PreparedStatement
+import java.sql.ResultSet
+import java.sql.SQLException
+
+@MappedTypes(Any::class)
+class JSONTypeHandlerPg : BaseTypeHandler<Any>() {
+    @Throws(SQLException::class)
+    override fun setNonNullParameter(ps: PreparedStatement, i: Int, parameter: Any, jdbcType: JdbcType) {
+        jsonObject.type = "json"
+        jsonObject.value = parameter.toString()
+        ps.setObject(i, jsonObject)
+    }
+
+    @Throws(SQLException::class)
+    override fun getNullableResult(rs: ResultSet, columnName: String): Any {
+        // TODO Auto-generated method stub
+        return rs.getString(columnName)
+    }
+
+    @Throws(SQLException::class)
+    override fun getNullableResult(rs: ResultSet, columnIndex: Int): Any {
+        // TODO Auto-generated method stub
+        return rs.getString(columnIndex)
+    }
+
+    @Throws(SQLException::class)
+    override fun getNullableResult(cs: CallableStatement, columnIndex: Int): Any {
+        // TODO Auto-generated method stub
+        return cs.getString(columnIndex)
+    }
+
+    companion object {
+        private val jsonObject = PGobject()
+    }
+
+}

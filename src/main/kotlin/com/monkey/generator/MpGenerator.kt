@@ -107,6 +107,7 @@ object MpGenerator {
                 object : InjectionConfig() {
                     override fun initMap() {
                         this.map = CacheGenerator.generate(codePath, xmlAbsolutePath) as Map<String, Any>?
+                        this.map.put("basePackage", basePackage)
                     }
                 }.setFileOutConfigList(mutableListOf<FileOutConfig>(object : FileOutConfig("/templates/mapper.xml.vm") {
                     // 自定义输出文件目录

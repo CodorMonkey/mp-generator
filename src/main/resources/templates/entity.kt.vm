@@ -10,7 +10,8 @@ import io.swagger.annotations.ApiModelProperty
 #if(!${table.importPackages.contains("com.baomidou.mybatisplus.annotation.TableField")})
 import com.baomidou.mybatisplus.annotation.TableField
 #end
-import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler
+import ${cfg.basePackage}.mp.JSONBTypeHandlerPg
+import ${cfg.basePackage}.mp.JSONTypeHandlerPg
 
 /**
  * <p>
@@ -68,8 +69,10 @@ open class ${entity} : Serializable {
         #end
     #elseif(${field.convert})
     @TableField("${field.name}")
-    #elseif(${field.type} == "json" || ${field.type} == "jsonb")
-    @TableField(typeHandler= JacksonTypeHandler::class)
+    #elseif(${field.type} == "json")
+    @TableField(typeHandler = JSONTypeHandlerPg::class)
+    #elseif(${field.type} == "jsonb")
+    @TableField(typeHandler = JSONBTypeHandlerPg::class)
     #end
 ## 乐观锁注解
     #if(${versionFieldName}==${field.name})
