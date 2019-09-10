@@ -7,6 +7,10 @@ import ${pkg};
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 #end
+#if(!${table.importPackages.contains("com.baomidou.mybatisplus.annotation.TableField")})
+import com.baomidou.mybatisplus.annotation.TableField
+#end
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler
 
 /**
  * <p>
@@ -54,7 +58,7 @@ open class ${entity} : Serializable {
         #end
     ## 普通字段
     #elseif(${field.fill})
-    ## -----   存在字段填充设置   -----
+        ## -----   存在字段填充设置   -----
         #if(${field.convert} && ${field.fill} != "UPDATE")
         @TableField(value = "${field.name}", fill = FieldFill.${field.fill})
         #elseif(${field.fill} == "UPDATE")
@@ -64,6 +68,8 @@ open class ${entity} : Serializable {
         #end
     #elseif(${field.convert})
     @TableField("${field.name}")
+    #elseif(${field.type} == "json" || ${field.type} == "jsonb")
+    @TableField(typeHandler= JacksonTypeHandler::class)
     #end
 ## 乐观锁注解
     #if(${versionFieldName}==${field.name})

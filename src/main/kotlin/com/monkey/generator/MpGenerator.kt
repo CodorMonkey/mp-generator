@@ -40,7 +40,7 @@ object MpGenerator {
         }
 
         val bizPackage = "$basePackage.biz"
-        val mpPackage = "$basePackage.mp"
+        // val mpPackage = "$basePackage.mp"
 
         // 策略配置
         val strategyConfig = StrategyConfig()
@@ -88,6 +88,7 @@ object MpGenerator {
             .setPassword(dbConfig.pwd)
             .setUrl(dbConfig.url)
             .setSchemaName(dbConfig.schemaName)
+            .setTypeConvert(PgTypeConverter())
 
         // 包配置
         val packageConfig = PackageConfig()
