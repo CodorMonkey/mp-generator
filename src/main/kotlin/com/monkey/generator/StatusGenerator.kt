@@ -1,6 +1,7 @@
 package com.monkey.generator
 
 import com.baomidou.mybatisplus.generator.config.ConstVal
+import com.baomidou.mybatisplus.generator.config.po.TableField
 import org.apache.commons.lang.StringUtils
 import org.apache.ibatis.logging.LogFactory
 import org.apache.velocity.VelocityContext
@@ -22,7 +23,7 @@ object StatusGenerator {
 
     private var velocity: VelocityEngine = VelocityEngine()
     private val formatReg = Regex("_(\\w)")
-    private val statusReg = Regex("@([a-zA-Z]\\w*)[ ]*(.*)")
+    private val statusReg = Regex("^@(.+)")
     private val statusValueReg = Regex("(\\d+)[ ]*=[ ]*(\\w+)[ ]*((?:.|\\w)*)")
 
     init {
@@ -30,29 +31,30 @@ object StatusGenerator {
         velocity.setProperty("classpath.resource.loader.class", ClasspathResourceLoader::class.qualifiedName)
     }
 
-    fun generate(codePath: String,
-                 packageName: String,
-                 str: String,
-                 author: String = "") {
-        val statusFind = statusReg.find(str)
+    fun generate(
+        codePath: String,
+        packageName: String,
+        field: TableField,
+        author: String = "") {
+        val statusFind = statusReg.find(field.comment)
 
         val ctx = VelocityContext()
-        if (statusFind != null && statusFind.groupValues.size > 1) {
-            val statusName = formatReg.replace(statusFind.groupValues[1]) {
+        if (statusFind != null) {
+            val statusName = formatReg.replace(field.name) {
                 it.groupValues[1].capitalize()
             }.capitalize()
-            val statusComment = statusFind.groupValues[2]
+            val statusComment = statusFind.groupValues[1]
 
             ctx.put("packageName", packageName)
             ctx.put("statusName", statusName)
             ctx.put("statusComment", statusComment)
             ctx.put("author", author)
-            val values = statusValueReg.findAll(str)
+            val values = statusValueReg.findAll(field.comment)
             val fields = values.map {
                 val map = HashMap<String, String>()
-                map.put("key", it.groupValues[2].toUpperCase())
-                map.put("value", it.groupValues[1])
-                map.put("comment", "/** ${it.groupValues[3]} **/")
+                map["key"] = it.groupValues[2].toUpperCase()
+                map["value"] = it.groupValues[1]
+                map["comment"] = "/** ${it.groupValues[3]} **/"
                 return@map map
             }
             ctx.put("statusFields", fields)

@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.generator.InjectionConfig
 import com.baomidou.mybatisplus.generator.config.*
 import com.baomidou.mybatisplus.generator.config.po.TableFill
 import com.baomidou.mybatisplus.generator.config.po.TableInfo
-import com.baomidou.mybatisplus.generator.config.rules.DateType
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy
 import java.io.File
 import java.util.*
@@ -107,7 +106,7 @@ object MpGenerator {
                 object : InjectionConfig() {
                     override fun initMap() {
                         this.map = CacheGenerator.generate(codePath, xmlAbsolutePath) as Map<String, Any>?
-                        this.map.put("basePackage", basePackage)
+                        this.map["basePackage"] = basePackage
                     }
                 }.setFileOutConfigList(mutableListOf<FileOutConfig>(object : FileOutConfig("/templates/mapper.xml.vm") {
                     // 自定义输出文件目录
@@ -117,7 +116,7 @@ object MpGenerator {
                                 StatusGenerator.generate(
                                     codePath = codePath,
                                     packageName = "$bizPackage.constants",
-                                    str = it.comment,
+                                    field = it,
                                     author = author
                                 )
                             }
